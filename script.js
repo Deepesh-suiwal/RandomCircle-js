@@ -7,8 +7,8 @@ const undoCircles = [];
 const redoCircles = [];
 
 const colours = [
-    "#fff", "#FFBF00", "#FF7F50", "#DE3163", "#40E0D0","purple","grey","cyan",
-    "#6495ED", "#FF00FF", "#800080", "#008000", "#000","red","green","orangered"
+    "#fff", "#FFBF00", "#FF7F50", "#DE3163", "#40E0D0", "purple", "grey", "cyan",
+    "#6495ED", "#FF00FF", "#800080", "#008000", "#000", "red", "green", "orangered"
 ];
 
 function RandomColor() {
@@ -35,11 +35,37 @@ showResult.addEventListener("click", (e) => {
     circle.style.left = `${x - 10}px`;
     circle.style.top = `${y - 10}px`;
 
-    const color =RandomColor();
+    const color = RandomColor();
     circle.style.backgroundColor = color;
 
     showResult.appendChild(circle);
     undoCircles.push(circle);
+    redoCircles.length = 0;
+
+    updateButton();
+});
+
+undobtn.addEventListener("click", () => {
+    if (undoCircles.length > 0) {
+        const circle = undoCircles.pop();
+        redoCircles.push(circle);
+        circle.remove();
+        updateButton();
+    }
+});
+
+redobtn.addEventListener("click", () => {
+    if (redoCircles.length > 0) {
+        const circle = redoCircles.pop();
+        showResult.appendChild(circle);
+        undoCircles.push(circle);
+        updateButton();
+    }
+});
+
+reset.addEventListener("click", () => {
+    undoCircles.forEach(circle => circle.remove());
+    undoCircles.length = 0;
     redoCircles.length = 0;
 
     updateButton();
